@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Copy, Check } from "lucide-react";
 import { api, ApiError } from "../lib/api";
-import {
+import type {
   Empresa,
   EmpresaUpdateRequest,
-  EmpresaServiciosSchema,
+  EmpresaServicios,
   EmpresaNotificaciones,
-  PLANES,
-  TIMEZONES,
 } from "../types/empresas";
+import { PLANES, TIMEZONES } from "../types/empresas";
 
 // ─── Toggle helper ────────────────────────────────────────────────────────────
 
@@ -93,7 +92,7 @@ export default function EmpresaFormPage() {
     load();
   }, [id]);
 
-  function setServicios(partial: Partial<EmpresaServiciosSchema>) {
+  function setServicios(partial: Partial<EmpresaServicios>) {
     setForm((f) => ({ ...f, servicios: { ...f.servicios!, ...partial } }));
   }
 

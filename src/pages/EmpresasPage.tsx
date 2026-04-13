@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Building2, Plus, Pencil, Power, Bot, Globe, Send, Mail } from "lucide-react";
+import { Plus, Pencil, Power, Bot, Globe, Send, Mail } from "lucide-react";
 import { api, ApiError } from "../lib/api";
-import { Empresa, EmpresaListResponse, EmpresaCreateRequest, PLANES, TIMEZONES } from "../types/empresas";
+import type { Empresa, EmpresaListResponse, EmpresaCreateRequest } from "../types/empresas";
+import { PLANES, TIMEZONES } from "../types/empresas";
 
 // ─── Utilidades ───────────────────────────────────────────────────────────────
 
@@ -298,16 +299,12 @@ export default function EmpresasPage() {
                   {/* Notificaciones */}
                   <td className="px-4 py-3">
                     <div className="flex gap-2">
-                      <Send
-                        size={15}
-                        className={empresa.notificaciones.telegram.enabled ? "text-blue-500" : "text-gray-300"}
-                        title="Telegram"
-                      />
-                      <Mail
-                        size={15}
-                        className={empresa.notificaciones.email.enabled ? "text-green-500" : "text-gray-300"}
-                        title="Email"
-                      />
+                      <span title="Telegram">
+                        <Send size={15} className={empresa.notificaciones.telegram.enabled ? "text-blue-500" : "text-gray-300"} />
+                      </span>
+                      <span title="Email">
+                        <Mail size={15} className={empresa.notificaciones.email.enabled ? "text-green-500" : "text-gray-300"} />
+                      </span>
                     </div>
                   </td>
 
