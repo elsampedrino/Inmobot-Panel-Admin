@@ -31,8 +31,8 @@ export default function App() {
           <Route path="propiedades/:id/editar"           element={<PropiedadFormPage />} />
           <Route path="leads"                            element={<LeadsPage />} />
           <Route path="leads/:id"                        element={<LeadDetailPage />} />
-          <Route path="empresas"                         element={<EmpresasPage />} />
-          <Route path="empresas/:id/editar"              element={<EmpresaFormPage />} />
+          <Route path="empresas" element={<ProtectedRoute requireSuperadmin><EmpresasPage /></ProtectedRoute>} />
+          <Route path="empresas/:id/editar" element={<ProtectedRoute requireSuperadmin><EmpresaFormPage /></ProtectedRoute>} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
