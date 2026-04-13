@@ -5,13 +5,15 @@ import {
   Users,
   LogOut,
   ChevronRight,
+  Briefcase,
 } from "lucide-react";
 import { clearSession, getSession } from "../lib/auth";
 
 const navItems = [
-  { to: "/dashboard",   label: "Inicio",     icon: LayoutDashboard },
-  { to: "/propiedades", label: "Propiedades", icon: Building2 },
-  { to: "/leads",       label: "Leads",       icon: Users },
+  { to: "/dashboard",   label: "Inicio",     icon: LayoutDashboard, superadmin: false },
+  { to: "/propiedades", label: "Propiedades", icon: Building2,       superadmin: false },
+  { to: "/leads",       label: "Leads",       icon: Users,           superadmin: false },
+  { to: "/empresas",    label: "Empresas",    icon: Briefcase,       superadmin: true  },
 ];
 
 export default function Shell() {
@@ -37,7 +39,7 @@ export default function Shell() {
 
         {/* Nav */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {navItems.map(({ to, label, icon: Icon }) => (
+          {navItems.filter(({ superadmin }) => !superadmin || session?.usuario.es_superadmin).map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
