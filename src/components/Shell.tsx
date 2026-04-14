@@ -10,10 +10,10 @@ import {
 import { clearSession, getSession } from "../lib/auth";
 
 const navItems = [
-  { to: "/dashboard",   label: "Inicio",     icon: LayoutDashboard, superadmin: false },
-  { to: "/propiedades", label: "Propiedades", icon: Building2,       superadmin: false },
-  { to: "/leads",       label: "Leads",       icon: Users,           superadmin: false },
-  { to: "/empresas",    label: "Empresas",    icon: Briefcase,       superadmin: true  },
+  { to: "/dashboard",   label: "Inicio",     icon: LayoutDashboard, superadmin: false, soloEmpresa: false },
+  { to: "/propiedades", label: "Propiedades", icon: Building2,       superadmin: false, soloEmpresa: true  },
+  { to: "/leads",       label: "Leads",       icon: Users,           superadmin: false, soloEmpresa: true  },
+  { to: "/empresas",    label: "Empresas",    icon: Briefcase,       superadmin: true,  soloEmpresa: false },
 ];
 
 export default function Shell() {
@@ -39,7 +39,10 @@ export default function Shell() {
 
         {/* Nav */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {navItems.filter(({ superadmin }) => !superadmin || session?.usuario.es_superadmin).map(({ to, label, icon: Icon }) => (
+          {navItems.filter(({ superadmin, soloEmpresa }) =>
+            (!superadmin || session?.usuario.es_superadmin) &&
+            (!soloEmpresa || !session?.usuario.es_superadmin)
+          ).map(({ to, label, icon: Icon }) => (
             <NavLink
               key={to}
               to={to}
