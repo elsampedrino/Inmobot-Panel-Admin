@@ -21,9 +21,15 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const res = await fetch(`${BASE_URL}${path}`, { ...options, headers });
 
   if (res.status === 401) {
-    clearSession();
-    window.location.href = "/login";
-    throw new ApiError(401, "Sesión expirada");
+    if (getToken()) {
+      // Había sesión activa → expiró o fue revocada
+      clearSession();
+      window.location.href = "/login";
+      throw new ApiError(401, "Sesión expirada");
+    }
+    // Sin sesión (ej: intento de login) → mostrar error real de la API
+    const body = await res.json().catch(() => ({}));
+    throw new ApiError(401, body.detail ?? "Credenciales inválidas");
   }
 
   if (!res.ok) {
