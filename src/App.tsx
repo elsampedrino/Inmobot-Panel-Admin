@@ -11,6 +11,7 @@ import EmpresasPage from "./pages/EmpresasPage";
 import EmpresaFormPage from "./pages/EmpresaFormPage";
 import UsuariosPage from "./pages/UsuariosPage";
 import UsuarioFormPage from "./pages/UsuarioFormPage";
+import ImportacionesPage from "./pages/ImportacionesPage";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
           <Route path="empresas/:id/editar" element={<ProtectedRoute requireSuperadmin><EmpresaFormPage /></ProtectedRoute>} />
           <Route path="usuarios" element={<ProtectedRoute requireSuperadmin><UsuariosPage /></ProtectedRoute>} />
           <Route path="usuarios/:id/editar" element={<ProtectedRoute requireSuperadmin><UsuarioFormPage /></ProtectedRoute>} />
+          <Route path="importaciones" element={<ProtectedRoute requireSuperadmin><ImportacionesPage /></ProtectedRoute>} />
         </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

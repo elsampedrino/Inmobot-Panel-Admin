@@ -7,6 +7,7 @@ import {
   ChevronRight,
   Briefcase,
   UserCog,
+  FileInput,
 } from "lucide-react";
 import { clearSession, getSession } from "../lib/auth";
 
@@ -15,7 +16,8 @@ const navItems = [
   { to: "/propiedades", label: "Propiedades", icon: Building2,       superadmin: false, soloEmpresa: true  },
   { to: "/leads",       label: "Leads",       icon: Users,           superadmin: false, soloEmpresa: true  },
   { to: "/empresas",    label: "Empresas",    icon: Briefcase,       superadmin: true,  soloEmpresa: false },
-  { to: "/usuarios",    label: "Usuarios",    icon: UserCog,         superadmin: true,  soloEmpresa: false },
+  { to: "/usuarios",       label: "Usuarios",      icon: UserCog,   superadmin: true,  soloEmpresa: false },
+  { to: "/importaciones",  label: "Importaciones", icon: FileInput, superadmin: true,  soloEmpresa: false },
 ];
 
 export default function Shell() {
