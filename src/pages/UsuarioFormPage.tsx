@@ -97,7 +97,8 @@ export default function UsuarioFormPage() {
           id_empresa: userData.id_empresa,
           activo: userData.activo,
         });
-        setEmpresas(empresasData.empresas);
+        const ownEmpresaId = session?.empresa.id_empresa;
+        setEmpresas(empresasData.empresas.filter((e) => e.id_empresa !== ownEmpresaId));
       } catch {
         setError("No se pudo cargar el usuario.");
       } finally {

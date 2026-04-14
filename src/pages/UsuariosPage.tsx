@@ -14,6 +14,8 @@ interface ModalAltaProps {
 }
 
 function ModalAlta({ onClose, onCreated }: ModalAltaProps) {
+  const ownEmpresaId = getSession()?.empresa.id_empresa;
+
   const [form, setForm] = useState<UsuarioCreateRequest>({
     nombre: "",
     email: "",
@@ -28,7 +30,7 @@ function ModalAlta({ onClose, onCreated }: ModalAltaProps) {
 
   useEffect(() => {
     api.get<EmpresaListResponse>("/admin/empresas?activa=true").then((d) =>
-      setEmpresas(d.empresas)
+      setEmpresas(d.empresas.filter((e) => e.id_empresa !== ownEmpresaId))
     );
   }, []);
 
