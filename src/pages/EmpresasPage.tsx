@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Pencil, Power, Bot, Globe, Send, Mail } from "lucide-react";
+import { Plus, Pencil, Power, Bot, Globe, Send, Mail, Trash2 } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import { getSession } from "../lib/auth";
 import type { Empresa, EmpresaListResponse, EmpresaCreateRequest } from "../types/empresas";
@@ -186,6 +186,8 @@ export default function EmpresasPage() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [togglingId, setTogglingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
@@ -212,6 +214,21 @@ export default function EmpresasPage() {
       setEmpresas((prev) => prev.map((e) => e.id_empresa === updated.id_empresa ? updated : e));
     } finally {
       setTogglingId(null);
+    }
+  }
+
+  async function handleDelete(empresa: Empresa) {
+    if (!window.confirm(`¿Eliminar "${empresa.nombre}"? Esta acción no se puede deshacer.`)) return;
+    setDeleteError(null);
+    setDeletingId(empresa.id_empresa);
+    try {
+      await api.del(`/admin/empresas/${empresa.id_empresa}`);
+      setEmpresas((prev) => prev.filter((e) => e.id_empresa !== empresa.id_empresa));
+      setTotal((t) => t - 1);
+    } catch (err) {
+      setDeleteError(err instanceof ApiError ? err.message : "Error al eliminar.");
+    } finally {
+      setDeletingId(null);
     }
   }
 
@@ -325,15 +342,25 @@ export default function EmpresasPage() {
                     </button>
                   </td>
 
-                  {/* Editar */}
+                  {/* Acciones */}
                   <td className="px-4 py-3 text-right">
-                    <button
-                      onClick={() => navigate(`/empresas/${empresa.id_empresa}/editar`)}
-                      className="text-gray-400 hover:text-brand-600 transition-colors"
-                      title="Editar"
-                    >
-                      <Pencil size={15} />
-                    </button>
+                    <div className="flex items-center justify-end gap-3">
+                      <button
+                        onClick={() => navigate(`/empresas/${empresa.id_empresa}/editar`)}
+                        className="text-gray-400 hover:text-brand-600 transition-colors"
+                        title="Editar"
+                      >
+                        <Pencil size={15} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(empresa)}
+                        disabled={deletingId === empresa.id_empresa}
+                        className="text-gray-400 hover:text-red-500 transition-colors disabled:opacity-40"
+                        title="Eliminar"
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -341,6 +368,10 @@ export default function EmpresasPage() {
           </table>
         )}
       </div>
+
+      {deleteError && (
+        <p className="mt-3 text-sm text-red-600">{deleteError}</p>
+      )}
 
       {showModal && <ModalAlta onClose={() => setShowModal(false)} onCreated={handleCreated} />}
     </div>
