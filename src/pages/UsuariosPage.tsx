@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Pencil, Power, ShieldCheck, User } from "lucide-react";
+import { Plus, Pencil, Power, ShieldCheck, User, Trash2 } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import { getSession } from "../lib/auth";
 import type { Usuario, UsuarioListResponse, UsuarioCreateRequest } from "../types/usuarios";
@@ -197,6 +197,8 @@ export default function UsuariosPage() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [togglingId, setTogglingId] = useState<number | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
@@ -228,6 +230,21 @@ export default function UsuariosPage() {
       setUsuarios((prev) => prev.map((u) => u.id_usuario === updated.id_usuario ? updated : u));
     } finally {
       setTogglingId(null);
+    }
+  }
+
+  async function handleDelete(usuario: Usuario) {
+    if (!window.confirm(`¿Eliminar al usuario "${usuario.nombre ?? usuario.email}"? Esta acción no se puede deshacer.`)) return;
+    setDeleteError(null);
+    setDeletingId(usuario.id_usuario);
+    try {
+      await api.del(`/admin/usuarios/${usuario.id_usuario}`);
+      setUsuarios((prev) => prev.filter((u) => u.id_usuario !== usuario.id_usuario));
+      setTotal((t) => t - 1);
+    } catch (err) {
+      setDeleteError(err instanceof ApiError ? err.message : "Error al eliminar.");
+    } finally {
+      setDeletingId(null);
     }
   }
 
@@ -346,15 +363,25 @@ export default function UsuariosPage() {
                       </button>
                     </td>
 
-                    {/* Editar */}
+                    {/* Acciones */}
                     <td className="px-4 py-3 text-right">
-                      <button
-                        onClick={() => navigate(`/usuarios/${usuario.id_usuario}/editar`)}
-                        className="text-gray-400 hover:text-brand-600 transition-colors"
-                        title="Editar"
-                      >
-                        <Pencil size={15} />
-                      </button>
+                      <div className="flex items-center justify-end gap-3">
+                        <button
+                          onClick={() => navigate(`/usuarios/${usuario.id_usuario}/editar`)}
+                          className="text-gray-400 hover:text-brand-600 transition-colors"
+                          title="Editar"
+                        >
+                          <Pencil size={15} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(usuario)}
+                          disabled={isOwn || deletingId === usuario.id_usuario}
+                          title={isOwn ? "No podés eliminar tu propio usuario" : "Eliminar"}
+                          className="text-gray-400 hover:text-red-500 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -363,6 +390,8 @@ export default function UsuariosPage() {
           </table>
         )}
       </div>
+
+      {deleteError && <p className="mt-3 text-sm text-red-600">{deleteError}</p>}
 
       {showModal && <ModalAlta onClose={() => setShowModal(false)} onCreated={handleCreated} />}
     </div>
