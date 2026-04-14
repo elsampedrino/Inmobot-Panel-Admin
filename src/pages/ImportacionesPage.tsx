@@ -3,7 +3,7 @@ import {
   Upload,
   Eye,
   Database,
-  Github,
+  GitBranch,
   CheckCircle2,
   AlertCircle,
   ChevronDown,
@@ -456,7 +456,7 @@ export default function ImportacionesPage() {
                   {publishing ? (
                     <RefreshCw size={15} className="animate-spin" />
                   ) : (
-                    <Github size={15} />
+                    <GitBranch size={15} />
                   )}
                   {publishing ? "Publicando..." : "Publicar en GitHub"}
                 </button>
@@ -506,7 +506,7 @@ export default function ImportacionesPage() {
               {publishing ? (
                 <RefreshCw size={15} className="animate-spin" />
               ) : (
-                <Github size={15} />
+                <GitBranch size={15} />
               )}
               {publishing ? "Publicando..." : "Publicar en GitHub"}
             </button>
