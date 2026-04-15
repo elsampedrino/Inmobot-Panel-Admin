@@ -553,6 +553,9 @@ export default function ImportacionesPage() {
                     Acción
                   </th>
                   <th className="text-left px-4 py-2.5 font-medium text-gray-600">
+                    Empresa
+                  </th>
+                  <th className="text-left px-4 py-2.5 font-medium text-gray-600">
                     Detalle
                   </th>
                   <th className="text-left px-4 py-2.5 font-medium text-gray-600">
@@ -567,6 +570,9 @@ export default function ImportacionesPage() {
                 {logs.map((log) => (
                   <tr key={log.id} className="hover:bg-gray-50">
                     <td className="px-4 py-2.5">{badgeAccion(log.accion)}</td>
+                    <td className="px-4 py-2.5 text-sm text-gray-700">
+                      {log.empresa_nombre ?? "—"}
+                    </td>
                     <td className="px-4 py-2.5 text-xs text-gray-500">
                       {log.accion === "aplicar_db" && (
                         <>
