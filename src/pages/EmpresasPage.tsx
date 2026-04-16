@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, Pencil, Power, Bot, Globe, Send, Mail, Trash2 } from "lucide-react";
+import { Plus, Pencil, Power, Bot, Globe, Send, Mail, Trash2, GitBranch, LayoutDashboard } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import { getSession } from "../lib/auth";
 import type { Empresa, EmpresaListResponse, EmpresaCreateRequest } from "../types/empresas";
@@ -308,13 +308,27 @@ export default function EmpresasPage() {
 
                   {/* Servicios */}
                   <td className="px-4 py-3">
-                    <div className="flex gap-1.5">
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${empresa.servicios.bot ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-400"}`}>
-                        <Bot size={11} /> Bot
-                      </span>
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium ${empresa.servicios.landing ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-400"}`}>
-                        <Globe size={11} /> Landing
-                      </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {empresa.servicios.bot && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">
+                          <Bot size={11} /> Bot
+                        </span>
+                      )}
+                      {empresa.servicios.landing && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-700">
+                          <Globe size={11} /> Landing
+                        </span>
+                      )}
+                      {empresa.servicios.catalogo_repo && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
+                          <GitBranch size={11} /> Catálogo
+                        </span>
+                      )}
+                      {empresa.servicios.panel_cliente && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">
+                          <LayoutDashboard size={11} /> Panel
+                        </span>
+                      )}
                     </div>
                   </td>
 
