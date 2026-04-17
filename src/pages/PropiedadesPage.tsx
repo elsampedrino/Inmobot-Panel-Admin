@@ -13,7 +13,7 @@ import {
 export default function PropiedadesPage() {
   const navigate = useNavigate();
   const session = getSession();
-  const hasLanding = session?.empresa.servicios?.landing === true;
+  const hasLanding = session?.empresa.servicios?.catalogo_repo === true;
 
   const [items, setItems]         = useState<ItemAdmin[]>([]);
   const [total, setTotal]         = useState(0);
