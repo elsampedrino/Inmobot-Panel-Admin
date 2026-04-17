@@ -4,7 +4,7 @@ import { Plus, Pencil, Power, Bot, Globe, Send, Mail, Trash2, GitBranch, LayoutD
 import { api, ApiError } from "../lib/api";
 import { getSession } from "../lib/auth";
 import type { Empresa, EmpresaListResponse, EmpresaCreateRequest } from "../types/empresas";
-import { PLANES, TIMEZONES } from "../types/empresas";
+import { PLANES, RUBROS, TIMEZONES } from "../types/empresas";
 
 // ─── Utilidades ───────────────────────────────────────────────────────────────
 
@@ -34,6 +34,7 @@ function ModalAlta({ onClose, onCreated }: ModalAltaProps) {
     nombre: "",
     slug: "",
     id_plan: 1,
+    id_rubro: 1,
     timezone: "America/Argentina/Buenos_Aires",
     activa: true,
   });
@@ -123,6 +124,20 @@ function ModalAlta({ onClose, onCreated }: ModalAltaProps) {
             >
               {PLANES.map((p) => (
                 <option key={p.id} value={p.id}>{p.label}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Rubro */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Rubro *</label>
+            <select
+              value={form.id_rubro}
+              onChange={(e) => setForm((f) => ({ ...f, id_rubro: Number(e.target.value) }))}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+            >
+              {RUBROS.map((r) => (
+                <option key={r.id} value={r.id}>{r.label}</option>
               ))}
             </select>
           </div>
