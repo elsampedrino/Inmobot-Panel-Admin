@@ -169,7 +169,7 @@ export default function DashboardPage() {
         <KPICard icon={<Users      size={18}/>} label="Usuarios activos"    value={kpis.usuarios_activos} />
         <KPICard icon={<Upload     size={18}/>} label="Importaciones mes"   value={kpis.importaciones_mes} />
         <KPICard icon={<GitBranch  size={18}/>} label="Publicaciones mes"   value={kpis.publicaciones_mes} />
-        <KPICard icon={<Zap        size={18}/>} label="Tokens consumidos"   value={fmtTokens(kpis.tokens_mes)} sub="este mes (global)" />
+        <KPICard icon={<Zap        size={18}/>} label="Tokens consumidos"   value={fmtTokens(kpis.tokens_mes)} sub={`US$${uso_por_empresa.reduce((s, e) => s + e.costo_usd, 0).toFixed(3)} · (Mes actual)`} />
       </div>
 
       {/* Alertas */}
@@ -226,7 +226,7 @@ export default function DashboardPage() {
                     <span className="text-gray-400 ml-1">({fmtTokens(emp.tokens_input)}↑ {fmtTokens(emp.tokens_output)}↓)</span>
                   </td>
                   <td className="px-4 py-3 text-right text-gray-700">
-                    {emp.costo_usd > 0 ? `$${emp.costo_usd.toFixed(3)}` : "—"}
+                    {emp.costo_usd > 0 ? `US$${emp.costo_usd.toFixed(3)}` : "—"}
                   </td>
                   <td className="px-4 py-3 text-center">
                     <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${CONSUMO_STYLES[emp.estado_consumo]}`}>
