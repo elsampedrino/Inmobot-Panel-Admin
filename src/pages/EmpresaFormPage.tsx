@@ -69,6 +69,7 @@ export default function EmpresaFormPage() {
   const [igForm, setIgForm] = useState({ ig_user_id: "", access_token: "", token_expires_at: "" });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -184,7 +185,8 @@ export default function EmpresaFormPage() {
           token_expires_at: igForm.token_expires_at || null,
         });
       }
-      navigate("/empresas");
+      setSaved(true);
+      setTimeout(() => navigate("/empresas"), 1200);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Error al guardar.");
     } finally {
@@ -501,7 +503,7 @@ export default function EmpresaFormPage() {
             disabled={saving}
             className="px-5 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 disabled:opacity-50 transition-colors"
           >
-            {saving ? "Guardando..." : "Guardar cambios"}
+            {saving ? "Guardando..." : saved ? "✓ Guardado" : "Guardar cambios"}
           </button>
         </div>
       </form>
