@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   Building2, Users, Upload, GitBranch, Zap,
   AlertTriangle, CheckCircle, XCircle, RefreshCw,
@@ -80,7 +80,7 @@ const CONSUMO_STYLES = {
   critico: "bg-red-100 text-red-700",
 };
 
-const ALERTA_ICON: Record<string, JSX.Element> = {
+const ALERTA_ICON: Record<string, ReactNode> = {
   sin_notificaciones: <AlertTriangle size={14} className="text-yellow-500" />,
   sin_repo:           <AlertTriangle size={14} className="text-orange-500" />,
   alto:               <AlertTriangle size={14} className="text-yellow-500" />,
@@ -90,7 +90,7 @@ const ALERTA_ICON: Record<string, JSX.Element> = {
 // ─── Componentes pequeños ─────────────────────────────────────────────────────
 
 function KPICard({ icon, label, value, sub }: {
-  icon: JSX.Element; label: string; value: string | number; sub?: string;
+  icon: ReactNode; label: string; value: string | number; sub?: string;
 }) {
   return (
     <div className="bg-white rounded-xl border border-gray-200 p-5 flex items-start gap-4">
