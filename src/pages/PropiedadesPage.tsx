@@ -199,8 +199,10 @@ export default function PropiedadesPage() {
                         )}
                         <div>
                           <p className="font-medium text-gray-800 leading-tight">{item.titulo}</p>
-                          {item.atributos?.ciudad && (
-                            <p className="text-xs text-gray-400 mt-0.5">{item.atributos.ciudad as string}</p>
+                          {(item.atributos?.calle || item.atributos?.ciudad) && (
+                            <p className="text-xs text-gray-400 mt-0.5">
+                              {[item.atributos?.calle, item.atributos?.ciudad].filter(Boolean).join(", ")}
+                            </p>
                           )}
                         </div>
                       </div>
