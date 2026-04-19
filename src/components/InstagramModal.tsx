@@ -85,11 +85,6 @@ export default function InstagramModal({
 
   function handleTituloChange(val: string) {
     setTitulo(val);
-    setCaption(prev => {
-      const lines = prev.split("\n");
-      if (lines[0].startsWith("🏠 ")) lines[0] = `🏠 ${val}`;
-      return lines.join("\n");
-    });
   }
 
   const canPublish =
