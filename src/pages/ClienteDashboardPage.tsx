@@ -96,7 +96,7 @@ function KPICard({ icon, label, value, sub }: {
 }
 
 function PropRankItem({
-  rank, externalId, titulo, ubicacion, count, countLabel,
+  rank, externalId, titulo, ubicacion, count, countLabel, accent,
 }: {
   rank: number;
   externalId: string;
@@ -104,13 +104,17 @@ function PropRankItem({
   ubicacion: string | null;
   count: number;
   countLabel: string;
+  accent: "green" | "blue";
 }) {
+  const badgeClass = accent === "green"
+    ? "text-green-700 bg-green-50"
+    : "text-brand-600 bg-brand-50";
   return (
     <div className="flex items-start gap-3 py-3 border-b border-gray-100 last:border-0">
       <span className="text-xs font-bold text-gray-300 w-4 shrink-0 pt-0.5">{rank}</span>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-mono font-semibold text-brand-600 bg-brand-50 px-1.5 py-0.5 rounded">
+          <span className={`text-xs font-mono font-semibold px-1.5 py-0.5 rounded ${badgeClass}`}>
             {externalId}
           </span>
           <span className="text-sm font-medium text-gray-800 truncate">{titulo}</span>
@@ -279,13 +283,13 @@ export default function ClienteDashboardPage() {
       {/* Rendimiento de propiedades */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-        {/* Propiedades con más leads */}
+        {/* Propiedades vinculadas a leads */}
         <div>
-          <div className="flex items-center gap-2 mb-3">
-            <TrendingUp size={15} className="text-brand-600" />
-            <h2 className="text-sm font-semibold text-gray-700">Propiedades con más leads</h2>
-            <span className="text-xs text-gray-400">(mes actual)</span>
+          <div className="flex items-center gap-2 mb-1">
+            <TrendingUp size={15} className="text-green-600" />
+            <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Propiedades vinculadas a leads</h2>
           </div>
+          <p className="text-xs text-gray-400 mb-3">Propiedades asociadas a conversaciones que terminaron en contacto</p>
           <div className="bg-white rounded-xl border border-gray-200 px-4 py-2">
             {props_con_leads.length > 0 ? (
               props_con_leads.map((p, i) => (
@@ -297,23 +301,24 @@ export default function ClienteDashboardPage() {
                   ubicacion={p.ubicacion}
                   count={p.leads_mes}
                   countLabel="leads"
+                  accent="green"
                 />
               ))
             ) : (
               <p className="text-sm text-gray-400 py-6 text-center">
-                Todavía no hay propiedades con leads este mes.
+                Todavía no hay propiedades vinculadas a leads este mes.
               </p>
             )}
           </div>
         </div>
 
-        {/* Propiedades consultadas sin lead */}
+        {/* Propiedades sin conversión */}
         <div>
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-1">
             <Eye size={15} className="text-gray-500" />
-            <h2 className="text-sm font-semibold text-gray-700">Consultadas sin conversión</h2>
-            <span className="text-xs text-gray-400">(mes actual)</span>
+            <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Propiedades sin conversión</h2>
           </div>
+          <p className="text-xs text-gray-400 mb-3">Propiedades vistas en el Bot sin generar lead</p>
           <div className="bg-white rounded-xl border border-gray-200 px-4 py-2">
             {props_consultadas.length > 0 ? (
               props_consultadas.map((p, i) => (
@@ -325,6 +330,7 @@ export default function ClienteDashboardPage() {
                   ubicacion={p.ubicacion}
                   count={p.consultas_mes}
                   countLabel="consultas"
+                  accent="blue"
                 />
               ))
             ) : (
