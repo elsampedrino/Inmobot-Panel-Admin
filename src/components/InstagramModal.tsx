@@ -42,6 +42,7 @@ export default function InstagramModal({
   onClose: () => void;
 }) {
   const [preview, setPreview]       = useState<PreviewResponse | null>(null);
+  const [titulo, setTitulo]         = useState("");
   const [caption, setCaption]       = useState("");
   const [loading, setLoading]       = useState(true);
   const [loadError, setLoadError]   = useState<string | null>(null);
@@ -54,6 +55,7 @@ export default function InstagramModal({
       try {
         const data = await api.get<PreviewResponse>(`/admin/instagram/preview/${idItem}`);
         setPreview(data);
+        setTitulo(data.titulo);
         setCaption(data.caption);
       } catch (e) {
         setLoadError(e instanceof ApiError ? e.message : "Error al cargar preview");
@@ -79,6 +81,15 @@ export default function InstagramModal({
     } finally {
       setPublishing(false);
     }
+  }
+
+  function handleTituloChange(val: string) {
+    setTitulo(val);
+    setCaption(prev => {
+      const lines = prev.split("\n");
+      if (lines[0].startsWith("🏠 ")) lines[0] = `🏠 ${val}`;
+      return lines.join("\n");
+    });
   }
 
   const canPublish =
@@ -116,10 +127,15 @@ export default function InstagramModal({
           {preview && !result && (
             <div className="space-y-5">
 
-              {/* Propiedad */}
-              <div>
-                <p className="text-xs text-gray-400 font-mono">{preview.external_id}</p>
-                <p className="text-sm font-medium text-gray-800">{preview.titulo}</p>
+              {/* Título editable */}
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-gray-700">Título</label>
+                <input
+                  type="text"
+                  value={titulo}
+                  onChange={(e) => handleTituloChange(e.target.value)}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+                />
               </div>
 
               {/* Imagen */}
@@ -154,7 +170,7 @@ export default function InstagramModal({
               {/* Caption */}
               <div className="space-y-1.5">
                 <label className="text-sm font-medium text-gray-700">
-                  Caption{" "}
+                  Texto de la publicación{" "}
                   <span className="text-xs text-gray-400 font-normal">
                     ({caption.length}/2200)
                   </span>
