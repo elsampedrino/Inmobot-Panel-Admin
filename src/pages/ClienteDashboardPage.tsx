@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import {
   Users, MessageCircle, Building2, RefreshCw,
-  AlertTriangle, CheckCircle, Star,
+  AlertTriangle, CheckCircle, TrendingUp, Eye,
 } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import { getSession } from "../lib/auth";
@@ -30,13 +30,18 @@ interface ActividadBot {
   promedio_diario: number;
 }
 
-interface PropiedadResumen {
-  id_item: string;
+interface PropConLeads {
+  external_id: string;
   titulo: string;
-  tipo: string;
-  categoria: string;
-  activo: boolean;
-  destacado: boolean;
+  ubicacion: string | null;
+  leads_mes: number;
+}
+
+interface PropConsultada {
+  external_id: string;
+  titulo: string;
+  ubicacion: string | null;
+  consultas_mes: number;
 }
 
 interface AlertaCliente {
@@ -49,7 +54,8 @@ interface ClienteDashboardResponse {
   kpis: ClienteKPIs;
   leads_recientes: LeadResumen[];
   actividad_bot: ActividadBot;
-  propiedades: PropiedadResumen[];
+  props_con_leads: PropConLeads[];
+  props_consultadas: PropConsultada[];
   alertas: AlertaCliente[];
   generado_en: string;
 }
@@ -84,6 +90,38 @@ function KPICard({ icon, label, value, sub }: {
         <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">{label}</p>
         <p className="text-2xl font-bold text-gray-900">{value}</p>
         {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
+      </div>
+    </div>
+  );
+}
+
+function PropRankItem({
+  rank, externalId, titulo, ubicacion, count, countLabel,
+}: {
+  rank: number;
+  externalId: string;
+  titulo: string;
+  ubicacion: string | null;
+  count: number;
+  countLabel: string;
+}) {
+  return (
+    <div className="flex items-start gap-3 py-3 border-b border-gray-100 last:border-0">
+      <span className="text-xs font-bold text-gray-300 w-4 shrink-0 pt-0.5">{rank}</span>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs font-mono font-semibold text-brand-600 bg-brand-50 px-1.5 py-0.5 rounded">
+            {externalId}
+          </span>
+          <span className="text-sm font-medium text-gray-800 truncate">{titulo}</span>
+        </div>
+        {ubicacion && (
+          <p className="text-xs text-gray-400 mt-0.5">{ubicacion}</p>
+        )}
+      </div>
+      <div className="shrink-0 text-right">
+        <span className="text-lg font-bold text-gray-900">{count}</span>
+        <p className="text-xs text-gray-400">{countLabel}</p>
       </div>
     </div>
   );
@@ -130,7 +168,7 @@ export default function ClienteDashboardPage() {
     );
   }
 
-  const { kpis, leads_recientes, actividad_bot, propiedades, alertas, generado_en } = data;
+  const { kpis, leads_recientes, actividad_bot, props_con_leads, props_consultadas, alertas, generado_en } = data;
 
   return (
     <div className="p-8 space-y-8">
@@ -153,10 +191,10 @@ export default function ClienteDashboardPage() {
 
       {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <KPICard icon={<Users       size={18}/>} label="Leads del mes"       value={kpis.leads_mes} />
-        <KPICard icon={<Users       size={18}/>} label="Leads nuevos"        value={kpis.leads_nuevos} sub="Sin contactar" />
-        <KPICard icon={<MessageCircle size={18}/>} label="Conversaciones"    value={kpis.conversaciones_mes} sub="(Mes actual)" />
-        <KPICard icon={<Building2   size={18}/>} label="Propiedades activas" value={kpis.propiedades_activas} />
+        <KPICard icon={<Users         size={18}/>} label="Leads del mes"       value={kpis.leads_mes} />
+        <KPICard icon={<Users         size={18}/>} label="Leads nuevos"        value={kpis.leads_nuevos} sub="Sin contactar" />
+        <KPICard icon={<MessageCircle size={18}/>} label="Conversaciones"      value={kpis.conversaciones_mes} sub="(Mes actual)" />
+        <KPICard icon={<Building2     size={18}/>} label="Propiedades activas" value={kpis.propiedades_activas} />
       </div>
 
       {/* Alertas */}
@@ -177,10 +215,9 @@ export default function ClienteDashboardPage() {
         </div>
       )}
 
-      {/* Leads + Actividad bot — dos columnas */}
+      {/* Leads recientes + Actividad bot */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        {/* Leads recientes — 2/3 del ancho */}
         <div className="lg:col-span-2">
           <h2 className="text-sm font-semibold text-gray-700 mb-3">Leads recientes</h2>
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
@@ -200,7 +237,7 @@ export default function ClienteDashboardPage() {
                     <td className="px-4 py-3 text-gray-400 text-xs whitespace-nowrap">{fmtFecha(l.fecha)}</td>
                     <td className="px-4 py-3 text-gray-800 font-medium">{l.nombre ?? "—"}</td>
                     <td className="px-4 py-3 text-gray-500 text-xs">{l.telefono ?? "—"}</td>
-                    <td className="px-4 py-3 text-gray-500 text-xs max-w-[180px] truncate" title={l.propiedad_titulo ?? undefined}>
+                    <td className="px-4 py-3 text-gray-500 text-xs max-w-[160px] truncate" title={l.propiedad_titulo ?? undefined}>
                       {l.propiedad_titulo ?? "—"}
                     </td>
                     <td className="px-4 py-3"><EstadoBadge estado={l.estado} /></td>
@@ -218,7 +255,6 @@ export default function ClienteDashboardPage() {
           </div>
         </div>
 
-        {/* Actividad del bot — 1/3 del ancho */}
         <div>
           <h2 className="text-sm font-semibold text-gray-700 mb-3">Actividad del bot</h2>
           <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-4">
@@ -240,50 +276,63 @@ export default function ClienteDashboardPage() {
         </div>
       </div>
 
-      {/* Propiedades publicadas */}
-      <div>
-        <h2 className="text-sm font-semibold text-gray-700 mb-3">Propiedades publicadas</h2>
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Título</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Tipo</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Operación</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Estado</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Destacada</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {propiedades.map(p => (
-                <tr key={p.id_item} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-medium text-gray-800">{p.titulo}</td>
-                  <td className="px-4 py-3 text-gray-500 capitalize">{p.tipo || "—"}</td>
-                  <td className="px-4 py-3 text-gray-500 capitalize">{p.categoria || "—"}</td>
-                  <td className="px-4 py-3 text-center">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${
-                      p.activo ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
-                    }`}>
-                      {p.activo ? "Activa" : "Inactiva"}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    {p.destacado
-                      ? <Star size={14} className="mx-auto text-yellow-400 fill-yellow-400" />
-                      : <span className="text-gray-300 text-xs">—</span>
-                    }
-                  </td>
-                </tr>
-              ))}
-              {propiedades.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="px-4 py-8 text-center text-gray-400 text-sm">
-                    Sin propiedades cargadas.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+      {/* Rendimiento de propiedades */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        {/* Propiedades con más leads */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <TrendingUp size={15} className="text-brand-600" />
+            <h2 className="text-sm font-semibold text-gray-700">Propiedades con más leads</h2>
+            <span className="text-xs text-gray-400">(mes actual)</span>
+          </div>
+          <div className="bg-white rounded-xl border border-gray-200 px-4 py-2">
+            {props_con_leads.length > 0 ? (
+              props_con_leads.map((p, i) => (
+                <PropRankItem
+                  key={p.external_id + i}
+                  rank={i + 1}
+                  externalId={p.external_id}
+                  titulo={p.titulo}
+                  ubicacion={p.ubicacion}
+                  count={p.leads_mes}
+                  countLabel="leads"
+                />
+              ))
+            ) : (
+              <p className="text-sm text-gray-400 py-6 text-center">
+                Todavía no hay propiedades con leads este mes.
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Propiedades consultadas sin lead */}
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Eye size={15} className="text-gray-500" />
+            <h2 className="text-sm font-semibold text-gray-700">Consultadas sin conversión</h2>
+            <span className="text-xs text-gray-400">(mes actual)</span>
+          </div>
+          <div className="bg-white rounded-xl border border-gray-200 px-4 py-2">
+            {props_consultadas.length > 0 ? (
+              props_consultadas.map((p, i) => (
+                <PropRankItem
+                  key={p.external_id + i}
+                  rank={i + 1}
+                  externalId={p.external_id}
+                  titulo={p.titulo}
+                  ubicacion={p.ubicacion}
+                  count={p.consultas_mes}
+                  countLabel="consultas"
+                />
+              ))
+            ) : (
+              <p className="text-sm text-gray-400 py-6 text-center">
+                Todavía no hay consultas sobre propiedades este mes.
+              </p>
+            )}
+          </div>
         </div>
       </div>
 
