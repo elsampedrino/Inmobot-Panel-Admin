@@ -148,13 +148,13 @@ export default function LeadsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50">
-                <th className="text-left px-4 py-3 font-medium text-gray-500 text-xs uppercase tracking-wide">Nombre</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 text-xs uppercase tracking-wide">Teléfono</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 text-xs uppercase tracking-wide">Email</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 text-xs uppercase tracking-wide">Estado</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 text-xs uppercase tracking-wide">Fecha</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 text-xs uppercase tracking-wide">Propiedad de interés</th>
+              <tr className="border-b border-cyan-200 bg-cyan-100">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Nombre</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Teléfono</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Email</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Estado</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Fecha</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Propiedad de interés</th>
               </tr>
             </thead>
             <tbody>

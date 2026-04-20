@@ -169,19 +169,19 @@ export default function PropiedadesPage() {
           <div className="p-8 text-center text-gray-400 text-sm">No hay propiedades.</div>
         ) : (
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-cyan-100 border-b border-cyan-200">
               <tr>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">ID</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Propiedad</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Tipo</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Operación</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Precio</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Activa</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Destacada</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">ID</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Propiedad</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Tipo</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Operación</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Precio</th>
+                <th className="text-center px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Activa</th>
+                <th className="text-center px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Destacada</th>
                 {hasInstagram && (
-                  <th className="text-center px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Instagram</th>
+                  <th className="text-center px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Instagram</th>
                 )}
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Editar</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Editar</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">

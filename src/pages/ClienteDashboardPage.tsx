@@ -84,8 +84,8 @@ function KPICard({ icon, label, value, sub }: {
   icon: ReactNode; label: string; value: string | number; sub?: string;
 }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 flex items-start gap-4">
-      <div className="p-2.5 rounded-lg bg-brand-50 text-brand-600 shrink-0">{icon}</div>
+    <div className="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl border border-violet-100 p-5 flex items-start gap-4 hover:border-violet-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
+      <div className="p-2.5 rounded-lg bg-gray-900 text-white shrink-0">{icon}</div>
       <div>
         <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">{label}</p>
         <p className="text-2xl font-bold text-gray-900">{value}</p>
@@ -226,13 +226,13 @@ export default function ClienteDashboardPage() {
           <h2 className="text-sm font-semibold text-gray-700 mb-3">Leads recientes</h2>
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="bg-cyan-100 border-b border-cyan-200">
                 <tr>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Fecha</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Nombre</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Teléfono</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Propiedad</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Estado</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Fecha</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Nombre</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Teléfono</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Propiedad</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Estado</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
