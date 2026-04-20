@@ -96,7 +96,7 @@ function KPICard({ icon, label, value, sub }: {
 }
 
 function PropRankItem({
-  rank, externalId, titulo, ubicacion, count, countLabel, accent,
+  rank, externalId, titulo, ubicacion, count, countLabel, accent, dark = false,
 }: {
   rank: number;
   externalId: string;
@@ -105,27 +105,30 @@ function PropRankItem({
   count: number;
   countLabel: string;
   accent: "green" | "blue";
+  dark?: boolean;
 }) {
-  const badgeClass = accent === "green"
-    ? "text-green-700 bg-green-50"
-    : "text-brand-600 bg-brand-50";
+  const badgeClass = dark
+    ? "text-white bg-white/20"
+    : accent === "green"
+      ? "text-green-700 bg-green-50"
+      : "text-brand-600 bg-brand-50";
   return (
-    <div className="flex items-start gap-3 py-3 border-b border-gray-100 last:border-0">
-      <span className="text-xs font-bold text-gray-300 w-4 shrink-0 pt-0.5">{rank}</span>
+    <div className={`flex items-start gap-3 py-3 border-b ${dark ? "border-white/20" : "border-gray-100"} last:border-0`}>
+      <span className={`text-xs font-bold ${dark ? "text-white/50" : "text-gray-300"} w-4 shrink-0 pt-0.5`}>{rank}</span>
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
           <span className={`text-xs font-mono font-semibold px-1.5 py-0.5 rounded ${badgeClass}`}>
             {externalId}
           </span>
-          <span className="text-sm font-medium text-gray-800 truncate">{titulo}</span>
+          <span className={`text-sm font-medium ${dark ? "text-white" : "text-gray-800"} truncate`}>{titulo}</span>
         </div>
         {ubicacion && (
-          <p className="text-xs text-gray-400 mt-0.5">{ubicacion}</p>
+          <p className={`text-xs ${dark ? "text-white/70" : "text-gray-400"} mt-0.5`}>{ubicacion}</p>
         )}
       </div>
       <div className="shrink-0 text-right">
-        <span className="text-lg font-bold text-gray-900">{count}</span>
-        <p className="text-xs text-gray-400">{countLabel}</p>
+        <span className={`text-lg font-bold ${dark ? "text-white" : "text-gray-900"}`}>{count}</span>
+        <p className={`text-xs ${dark ? "text-white/70" : "text-gray-400"}`}>{countLabel}</p>
       </div>
     </div>
   );
@@ -290,7 +293,7 @@ export default function ClienteDashboardPage() {
             <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Propiedades vinculadas a leads</h2>
           </div>
           <p className="text-xs text-gray-400 mb-3">Propiedades asociadas a conversaciones que terminaron en contacto</p>
-          <div className="bg-violet-100 rounded-xl border border-violet-300 px-4 py-2">
+          <div className="bg-violet-600 rounded-xl px-4 py-2">
             {props_con_leads.length > 0 ? (
               props_con_leads.map((p, i) => (
                 <PropRankItem
@@ -302,10 +305,11 @@ export default function ClienteDashboardPage() {
                   count={p.leads_mes}
                   countLabel="leads"
                   accent="green"
+                  dark={true}
                 />
               ))
             ) : (
-              <p className="text-sm text-gray-400 py-6 text-center">
+              <p className="text-sm text-white/70 py-6 text-center">
                 Todavía no hay propiedades vinculadas a leads este mes.
               </p>
             )}
@@ -319,7 +323,7 @@ export default function ClienteDashboardPage() {
             <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Propiedades sin conversión</h2>
           </div>
           <p className="text-xs text-gray-400 mb-3">Propiedades vistas en el Bot sin generar lead</p>
-          <div className="bg-cyan-100 rounded-xl border border-cyan-300 px-4 py-2">
+          <div className="bg-cyan-600 rounded-xl px-4 py-2">
             {props_consultadas.length > 0 ? (
               props_consultadas.map((p, i) => (
                 <PropRankItem
@@ -331,10 +335,11 @@ export default function ClienteDashboardPage() {
                   count={p.consultas_mes}
                   countLabel="consultas"
                   accent="blue"
+                  dark={true}
                 />
               ))
             ) : (
-              <p className="text-sm text-gray-400 py-6 text-center">
+              <p className="text-sm text-white/70 py-6 text-center">
                 Todavía no hay consultas sobre propiedades este mes.
               </p>
             )}
