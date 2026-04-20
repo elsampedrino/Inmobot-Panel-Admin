@@ -290,7 +290,7 @@ export default function ClienteDashboardPage() {
             <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Propiedades vinculadas a leads</h2>
           </div>
           <p className="text-xs text-gray-400 mb-3">Propiedades asociadas a conversaciones que terminaron en contacto</p>
-          <div className="bg-violet-50 rounded-xl border border-violet-200 px-4 py-2">
+          <div className="bg-violet-100 rounded-xl border border-violet-300 px-4 py-2">
             {props_con_leads.length > 0 ? (
               props_con_leads.map((p, i) => (
                 <PropRankItem
@@ -319,7 +319,7 @@ export default function ClienteDashboardPage() {
             <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Propiedades sin conversión</h2>
           </div>
           <p className="text-xs text-gray-400 mb-3">Propiedades vistas en el Bot sin generar lead</p>
-          <div className="bg-teal-50 rounded-xl border border-teal-200 px-4 py-2">
+          <div className="bg-cyan-100 rounded-xl border border-cyan-300 px-4 py-2">
             {props_consultadas.length > 0 ? (
               props_consultadas.map((p, i) => (
                 <PropRankItem
