@@ -187,7 +187,7 @@ export default function ClienteDashboardPage() {
         </div>
         <button
           onClick={load}
-          className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 transition-colors"
         >
           <RefreshCw size={14} /> Actualizar
         </button>
@@ -226,13 +226,13 @@ export default function ClienteDashboardPage() {
           <h2 className="text-sm font-semibold text-gray-700 mb-3">Leads recientes</h2>
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-cyan-100 border-b border-cyan-200">
+              <thead className="bg-brand-700 border-b border-brand-900">
                 <tr>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Fecha</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Nombre</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Teléfono</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Propiedad</th>
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Estado</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Fecha</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Nombre</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Teléfono</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Propiedad</th>
+                  <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Estado</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -290,7 +290,7 @@ export default function ClienteDashboardPage() {
             <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Propiedades vinculadas a leads</h2>
           </div>
           <p className="text-xs text-gray-400 mb-3">Propiedades asociadas a conversaciones que terminaron en contacto</p>
-          <div className="bg-white rounded-xl border border-gray-200 px-4 py-2">
+          <div className="bg-violet-50 rounded-xl border border-violet-200 px-4 py-2">
             {props_con_leads.length > 0 ? (
               props_con_leads.map((p, i) => (
                 <PropRankItem
@@ -319,7 +319,7 @@ export default function ClienteDashboardPage() {
             <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">Propiedades sin conversión</h2>
           </div>
           <p className="text-xs text-gray-400 mb-3">Propiedades vistas en el Bot sin generar lead</p>
-          <div className="bg-white rounded-xl border border-gray-200 px-4 py-2">
+          <div className="bg-teal-50 rounded-xl border border-teal-200 px-4 py-2">
             {props_consultadas.length > 0 ? (
               props_consultadas.map((p, i) => (
                 <PropRankItem

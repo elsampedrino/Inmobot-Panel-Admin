@@ -158,7 +158,7 @@ export default function DashboardPage() {
         </div>
         <button
           onClick={load}
-          className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-brand-600 text-white text-sm font-medium rounded-lg hover:bg-brand-700 transition-colors"
         >
           <RefreshCw size={14} /> Actualizar
         </button>
@@ -202,16 +202,16 @@ export default function DashboardPage() {
         <h2 className="text-sm font-semibold text-gray-700 mb-3">Uso por empresa — mes en curso</h2>
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-cyan-100 border-b border-cyan-200">
+            <thead className="bg-brand-700 border-b border-brand-900">
               <tr>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Empresa</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Plan</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Importaciones</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Publicaciones</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Leads</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Tokens</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Costo est.</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Consumo</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Empresa</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Plan</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Importaciones</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Publicaciones</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Leads</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Tokens</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Costo est.</th>
+                <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Consumo</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -253,14 +253,14 @@ export default function DashboardPage() {
         <h2 className="text-sm font-semibold text-gray-700 mb-3">Actividad reciente</h2>
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="bg-cyan-100 border-b border-cyan-200">
+            <thead className="bg-brand-700 border-b border-brand-900">
               <tr>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Fecha</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Empresa</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Acción</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Resultado</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Usuario</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Detalle</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Fecha</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Empresa</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Acción</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Resultado</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Usuario</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Detalle</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">

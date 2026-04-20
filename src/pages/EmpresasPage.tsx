@@ -296,12 +296,12 @@ export default function EmpresasPage() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-cyan-200 bg-cyan-100">
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Empresa</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Plan</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Servicios</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Notificaciones</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Activa</th>
+              <tr className="border-b border-brand-900 bg-brand-700">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Empresa</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Plan</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Servicios</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Notificaciones</th>
+                <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Activa</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>

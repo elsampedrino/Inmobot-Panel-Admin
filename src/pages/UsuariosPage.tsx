@@ -311,11 +311,11 @@ export default function UsuariosPage() {
         ) : (
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-cyan-200 bg-cyan-100">
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Usuario</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Empresa</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Rol</th>
-                <th className="text-center px-4 py-3 text-xs font-semibold text-cyan-900 uppercase tracking-wide">Activo</th>
+              <tr className="border-b border-brand-900 bg-brand-700">
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Usuario</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Empresa</th>
+                <th className="text-left px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Rol</th>
+                <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Activo</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
