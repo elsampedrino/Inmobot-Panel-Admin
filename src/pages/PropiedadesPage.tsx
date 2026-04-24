@@ -26,6 +26,7 @@ export default function PropiedadesPage() {
   const session = getSession();
   const hasLanding   = session?.empresa.servicios?.catalogo_repo === true;
   const hasInstagram = session?.empresa.servicios?.instagram === true;
+  const hasSocialPublish = hasInstagram || session?.empresa.servicios?.facebook === true;
 
   const [items, setItems]         = useState<ItemAdmin[]>([]);
   const [total, setTotal]         = useState(0);
@@ -178,8 +179,8 @@ export default function PropiedadesPage() {
                 <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Precio</th>
                 <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Activa</th>
                 <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Destacada</th>
-                {hasInstagram && (
-                  <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Instagram</th>
+                {hasSocialPublish && (
+                  <th className="text-center px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Redes</th>
                 )}
                 <th className="text-right px-4 py-3 text-xs font-semibold text-white uppercase tracking-wide">Editar</th>
               </tr>
@@ -243,12 +244,12 @@ export default function PropiedadesPage() {
                       </button>
                     </td>
 
-                    {/* Instagram */}
-                    {hasInstagram && (
+                    {/* Redes sociales */}
+                    {hasSocialPublish && (
                       <td className="px-4 py-3 text-center">
                         <button
                           onClick={() => setIgItemId(item.id_item)}
-                          title="Publicar en Instagram"
+                          title="Publicar en redes sociales"
                           className="inline-flex items-center justify-center w-8 h-8 text-gray-400 hover:text-pink-600 hover:bg-pink-50 rounded-lg transition-colors"
                         >
                           <IGIcon size={15} />
