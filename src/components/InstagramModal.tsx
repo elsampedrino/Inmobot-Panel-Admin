@@ -43,9 +43,14 @@ interface PublishResult {
   error_message: string | null;
 }
 
+interface PlatformResult {
+  result?: PublishResult;
+  error?: string;
+}
+
 interface SocialResults {
-  ig?: PublishResult;
-  fb?: PublishResult;
+  ig?: PlatformResult;
+  fb?: PlatformResult;
 }
 
 export default function InstagramModal({
@@ -62,7 +67,6 @@ export default function InstagramModal({
   const [loadError, setLoadError]   = useState<string | null>(null);
   const [publishing, setPublishing] = useState(false);
   const [results, setResults]       = useState<SocialResults | null>(null);
-  const [publishError, setPublishError] = useState<string | null>(null);
   const [publishToIG, setPublishToIG]   = useState(false);
   const [publishToFB, setPublishToFB]   = useState(false);
 
@@ -87,21 +91,23 @@ export default function InstagramModal({
   async function handlePublish() {
     if (!preview) return;
     setPublishing(true);
-    setPublishError(null);
     const partial: SocialResults = {};
-    try {
-      if (publishToIG) {
-        partial.ig = await api.post<PublishResult>("/admin/instagram/publish", { id_item: idItem, caption });
+    if (publishToIG) {
+      try {
+        partial.ig = { result: await api.post<PublishResult>("/admin/instagram/publish", { id_item: idItem, caption }) };
+      } catch (e) {
+        partial.ig = { error: e instanceof ApiError ? e.message : "Error al publicar en Instagram" };
       }
-      if (publishToFB) {
-        partial.fb = await api.post<PublishResult>("/admin/instagram/fb/publish", { id_item: idItem, caption });
-      }
-      setResults(partial);
-    } catch (e) {
-      setPublishError(e instanceof ApiError ? e.message : "Error al publicar");
-    } finally {
-      setPublishing(false);
     }
+    if (publishToFB) {
+      try {
+        partial.fb = { result: await api.post<PublishResult>("/admin/instagram/fb/publish", { id_item: idItem, caption }) };
+      } catch (e) {
+        partial.fb = { error: e instanceof ApiError ? e.message : "Error al publicar en Facebook" };
+      }
+    }
+    setResults(partial);
+    setPublishing(false);
   }
 
   const canPublish =
@@ -239,13 +245,6 @@ export default function InstagramModal({
                 </div>
               )}
 
-              {/* Error publicación */}
-              {publishError && (
-                <div className="bg-red-50 text-red-700 text-sm rounded-lg px-4 py-3">
-                  {publishError}
-                </div>
-              )}
-
               {/* Acciones */}
               <div className="flex items-center justify-end gap-3 pt-2">
                 <button
@@ -267,37 +266,60 @@ export default function InstagramModal({
             </div>
           )}
 
-          {/* Success */}
-          {results && (
-            <div className="text-center py-8 space-y-4">
-              <CheckCircle size={40} className="text-green-500 mx-auto" />
-              <p className="text-base font-semibold text-gray-900">¡Publicado con éxito!</p>
-              <div className="space-y-2 text-sm text-gray-500">
-                {results.ig && (
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-pink-500"><IGIcon size={14} /></span>
-                    Instagram — {results.ig.published_at
-                      ? new Date(results.ig.published_at).toLocaleString("es-AR")
-                      : "publicado"}
-                  </div>
-                )}
-                {results.fb && (
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-blue-600"><FBIcon size={14} /></span>
-                    Facebook — {results.fb.published_at
-                      ? new Date(results.fb.published_at).toLocaleString("es-AR")
-                      : "publicado"}
-                  </div>
-                )}
+          {/* Resultados */}
+          {results && (() => {
+            const allOk = (!results.ig || results.ig.result) && (!results.fb || results.fb.result);
+            const anyOk = results.ig?.result || results.fb?.result;
+            return (
+              <div className="text-center py-8 space-y-4">
+                {allOk
+                  ? <CheckCircle size={40} className="text-green-500 mx-auto" />
+                  : anyOk
+                    ? <AlertTriangle size={40} className="text-yellow-500 mx-auto" />
+                    : <AlertTriangle size={40} className="text-red-500 mx-auto" />
+                }
+                <p className="text-base font-semibold text-gray-900">
+                  {allOk ? "¡Publicado con éxito!" : anyOk ? "Publicado parcialmente" : "Error al publicar"}
+                </p>
+                <div className="space-y-2 text-sm text-left max-w-xs mx-auto">
+                  {results.ig && (
+                    results.ig.result
+                      ? <div className="flex items-center gap-2 text-green-700">
+                          <CheckCircle size={14} className="shrink-0" />
+                          <span className="text-pink-500"><IGIcon size={13} /></span>
+                          Instagram — {results.ig.result.published_at
+                            ? new Date(results.ig.result.published_at).toLocaleString("es-AR")
+                            : "publicado"}
+                        </div>
+                      : <div className="flex items-start gap-2 text-red-600">
+                          <AlertTriangle size={14} className="shrink-0 mt-0.5" />
+                          <span><span className="font-medium">Instagram:</span> {results.ig.error}</span>
+                        </div>
+                  )}
+                  {results.fb && (
+                    results.fb.result
+                      ? <div className="flex items-center gap-2 text-green-700">
+                          <CheckCircle size={14} className="shrink-0" />
+                          <span className="text-blue-600"><FBIcon size={13} /></span>
+                          Facebook — {results.fb.result.published_at
+                            ? new Date(results.fb.result.published_at).toLocaleString("es-AR")
+                            : "publicado"}
+                        </div>
+                      : <div className="flex items-start gap-2 text-red-600">
+                          <AlertTriangle size={14} className="shrink-0 mt-0.5" />
+                          <span><span className="font-medium">Facebook:</span> {results.fb.error}</span>
+                        </div>
+                  )}
+                </div>
+                <button
+                  onClick={onClose}
+                  className="mt-2 px-5 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Cerrar
+                </button>
               </div>
-              <button
-                onClick={onClose}
-                className="mt-2 px-5 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                Cerrar
-              </button>
-            </div>
-          )}
+            );
+          })()}
 
         </div>
       </div>
