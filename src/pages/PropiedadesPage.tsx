@@ -298,7 +298,12 @@ export default function PropiedadesPage() {
       </div>
 
       {igItemId && (
-        <InstagramModal idItem={igItemId} onClose={() => setIgItemId(null)} />
+        <InstagramModal
+          idItem={igItemId}
+          onClose={() => setIgItemId(null)}
+          igEnabled={hasInstagram}
+          fbEnabled={session?.empresa.servicios?.facebook === true}
+        />
       )}
     </div>
   );

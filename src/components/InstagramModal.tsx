@@ -56,9 +56,13 @@ interface SocialResults {
 export default function InstagramModal({
   idItem,
   onClose,
+  igEnabled = true,
+  fbEnabled = false,
 }: {
   idItem: string;
   onClose: () => void;
+  igEnabled?: boolean;
+  fbEnabled?: boolean;
 }) {
   const [preview, setPreview]       = useState<PreviewResponse | null>(null);
   const [titulo, setTitulo]         = useState("");
@@ -77,7 +81,7 @@ export default function InstagramModal({
         setPreview(data);
         setTitulo(data.titulo);
         setCaption(data.caption);
-        setPublishToIG(data.instagram_configurado);
+        setPublishToIG(igEnabled && data.instagram_configurado);
         setPublishToFB(false);
       } catch (e) {
         setLoadError(e instanceof ApiError ? e.message : "Error al cargar preview");
@@ -204,34 +208,38 @@ export default function InstagramModal({
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700">Publicar en:</label>
                 <div className="flex gap-5">
-                  <label className={`flex items-center gap-2 text-sm select-none ${!preview.instagram_configurado ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}>
-                    <input
-                      type="checkbox"
-                      checked={publishToIG}
-                      onChange={(e) => setPublishToIG(e.target.checked)}
-                      disabled={!preview.instagram_configurado}
-                      className="rounded accent-pink-500"
-                    />
-                    <span className="text-pink-500"><IGIcon size={14} /></span>
-                    Instagram
-                    {!preview.instagram_configurado && (
-                      <span className="text-xs text-gray-400">(no configurado)</span>
-                    )}
-                  </label>
-                  <label className={`flex items-center gap-2 text-sm select-none ${!preview.facebook_configurado ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}>
-                    <input
-                      type="checkbox"
-                      checked={publishToFB}
-                      onChange={(e) => setPublishToFB(e.target.checked)}
-                      disabled={!preview.facebook_configurado}
-                      className="rounded accent-blue-600"
-                    />
-                    <span className="text-blue-600"><FBIcon size={14} /></span>
-                    Facebook
-                    {!preview.facebook_configurado && (
-                      <span className="text-xs text-gray-400">(no configurado)</span>
-                    )}
-                  </label>
+                  {igEnabled && (
+                    <label className={`flex items-center gap-2 text-sm select-none ${!preview.instagram_configurado ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}>
+                      <input
+                        type="checkbox"
+                        checked={publishToIG}
+                        onChange={(e) => setPublishToIG(e.target.checked)}
+                        disabled={!preview.instagram_configurado}
+                        className="rounded accent-pink-500"
+                      />
+                      <span className="text-pink-500"><IGIcon size={14} /></span>
+                      Instagram
+                      {!preview.instagram_configurado && (
+                        <span className="text-xs text-gray-400">(no configurado)</span>
+                      )}
+                    </label>
+                  )}
+                  {fbEnabled && (
+                    <label className={`flex items-center gap-2 text-sm select-none ${!preview.facebook_configurado ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}>
+                      <input
+                        type="checkbox"
+                        checked={publishToFB}
+                        onChange={(e) => setPublishToFB(e.target.checked)}
+                        disabled={!preview.facebook_configurado}
+                        className="rounded accent-blue-600"
+                      />
+                      <span className="text-blue-600"><FBIcon size={14} /></span>
+                      Facebook
+                      {!preview.facebook_configurado && (
+                        <span className="text-xs text-gray-400">(no configurado)</span>
+                      )}
+                    </label>
+                  )}
                 </div>
               </div>
 
