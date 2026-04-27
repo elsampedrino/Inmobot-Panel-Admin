@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Copy, Check } from "lucide-react";
 import { api, ApiError } from "../lib/api";
+import { getSession, updateSessionEmpresa } from "../lib/auth";
 import type {
   Empresa,
   EmpresaUpdateRequest,
@@ -175,7 +176,16 @@ export default function EmpresaFormPage() {
 
     try {
       setSaving(true);
-      await api.put<Empresa>(`/admin/empresas/${id}`, form);
+      const updated = await api.put<Empresa>(`/admin/empresas/${id}`, form);
+      const session = getSession();
+      if (session && Number(id) === session.empresa.id_empresa) {
+        updateSessionEmpresa({
+          id_empresa: updated.id_empresa,
+          nombre: updated.nombre,
+          slug: updated.slug ?? null,
+          servicios: updated.servicios as Record<string, boolean>,
+        });
+      }
       if (form.servicios?.catalogo_repo) {
         await api.put<CatalogoRepoConfig>(`/admin/empresas/${id}/catalogo`, catalogoForm);
       }
