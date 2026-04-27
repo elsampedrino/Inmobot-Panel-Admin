@@ -183,7 +183,7 @@ export default function EmpresaFormPage() {
           id_empresa: updated.id_empresa,
           nombre: updated.nombre,
           slug: updated.slug ?? null,
-          servicios: updated.servicios as Record<string, boolean>,
+          servicios: updated.servicios as unknown as Record<string, boolean>,
         });
       }
       if (form.servicios?.catalogo_repo) {
