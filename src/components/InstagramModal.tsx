@@ -82,7 +82,7 @@ export default function InstagramModal({
         setTitulo(data.titulo);
         setCaption(data.caption);
         setPublishToIG(igEnabled && data.instagram_configurado);
-        setPublishToFB(false);
+        setPublishToFB(fbEnabled && data.facebook_configurado);
       } catch (e) {
         setLoadError(e instanceof ApiError ? e.message : "Error al cargar preview");
       } finally {
