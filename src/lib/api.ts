@@ -48,7 +48,11 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
-    throw new ApiError(res.status, body.detail ?? "Error inesperado");
+    const detail = body.detail;
+    const message = typeof detail === "object" && detail !== null
+      ? (detail.message ?? "Error inesperado")
+      : (detail ?? "Error inesperado");
+    throw new ApiError(res.status, message);
   }
 
   if (res.status === 204 || res.headers.get("content-length") === "0") {
