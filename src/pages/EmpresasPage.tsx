@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, Pencil, Power, Bot, Globe, Send, Mail, Trash2, GitBranch, LayoutDashboard } from "lucide-react";
 import { api, ApiError } from "../lib/api";
-import { getSession } from "../lib/auth";
 import type { Empresa, EmpresaListResponse, EmpresaCreateRequest } from "../types/empresas";
 import { PLANES, RUBROS, TIMEZONES } from "../types/empresas";
 
@@ -192,9 +191,6 @@ function ModalAlta({ onClose, onCreated }: ModalAltaProps) {
 
 export default function EmpresasPage() {
   const navigate = useNavigate();
-  const session = getSession();
-  const ownEmpresaId = session?.empresa.id_empresa;
-
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [total, setTotal] = useState(0);
   const [filtroActiva, setFiltroActiva] = useState<"todas" | "activas" | "inactivas">("todas");
@@ -209,9 +205,8 @@ export default function EmpresasPage() {
     try {
       const params = filtroActiva === "activas" ? "?activa=true" : filtroActiva === "inactivas" ? "?activa=false" : "";
       const data = await api.get<EmpresaListResponse>(`/admin/empresas${params}`);
-      const visible = data.empresas.filter((e) => e.id_empresa !== ownEmpresaId);
-      setEmpresas(visible);
-      setTotal(visible.length);
+      setEmpresas(data.empresas);
+      setTotal(data.empresas.length);
     } finally {
       setLoading(false);
     }
