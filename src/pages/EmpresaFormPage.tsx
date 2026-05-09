@@ -95,6 +95,7 @@ export default function EmpresaFormPage() {
           notificaciones: {
             telegram: { ...data.notificaciones.telegram },
             email: { ...data.notificaciones.email },
+            whatsapp: { ...data.notificaciones.whatsapp },
           },
         });
         if (cat) {
