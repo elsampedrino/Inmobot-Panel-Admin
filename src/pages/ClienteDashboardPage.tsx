@@ -84,10 +84,10 @@ function KPICard({ icon, label, value, sub }: {
   icon: ReactNode; label: string; value: string | number; sub?: string;
 }) {
   return (
-    <div className="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl border border-violet-100 p-5 flex items-start gap-4 hover:border-violet-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
-      <div className="p-2.5 rounded-lg bg-gray-900 text-white shrink-0">{icon}</div>
-      <div>
-        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">{label}</p>
+    <div className="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl border border-violet-100 p-4 flex items-start gap-3 hover:border-violet-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
+      <div className="p-2 rounded-lg bg-gray-900 text-white shrink-0">{icon}</div>
+      <div className="min-w-0">
+        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide leading-tight mb-1 break-words">{label}</p>
         <p className="text-2xl font-bold text-gray-900">{value}</p>
         {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
       </div>
@@ -200,8 +200,8 @@ export default function ClienteDashboardPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <KPICard icon={<Users         size={18}/>} label="Leads del mes"       value={kpis.leads_mes} />
         <KPICard icon={<Users         size={18}/>} label="Leads nuevos"        value={kpis.leads_nuevos} sub="Sin contactar" />
-        <KPICard icon={<MessageCircle size={18}/>} label="Conversaciones"      value={kpis.conversaciones_mes} sub="(Mes actual)" />
-        <KPICard icon={<Building2     size={18}/>} label="Propiedades activas" value={kpis.propiedades_activas} />
+        <KPICard icon={<MessageCircle size={18}/>} label="Conversas."      value={kpis.conversaciones_mes} sub="(Mes actual)" />
+        <KPICard icon={<Building2     size={18}/>} label="Prop. activas" value={kpis.propiedades_activas} />
       </div>
 
       {/* Alertas */}
@@ -227,7 +227,24 @@ export default function ClienteDashboardPage() {
 
         <div className="lg:col-span-2">
           <h2 className="text-sm font-semibold text-gray-700 mb-3">Leads recientes</h2>
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+
+          {/* Mobile: cards */}
+          <div className="md:hidden bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
+            {leads_recientes.length === 0 ? (
+              <p className="px-4 py-8 text-center text-gray-400 text-sm">Sin leads registrados este mes.</p>
+            ) : leads_recientes.map((l, i) => (
+              <div key={i} className="px-4 py-3 flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-gray-800 truncate">{l.nombre ?? l.telefono ?? "—"}</p>
+                  <p className="text-xs text-gray-400 truncate">{fmtFecha(l.fecha)}{l.propiedad_titulo ? ` · ${l.propiedad_titulo}` : ""}</p>
+                </div>
+                <EstadoBadge estado={l.estado} />
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop: tabla */}
+          <div className="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-brand-700 border-b border-brand-900">
                 <tr>

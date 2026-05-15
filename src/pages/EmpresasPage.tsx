@@ -282,8 +282,46 @@ export default function EmpresasPage() {
         ))}
       </div>
 
-      {/* Tabla */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      {/* Mobile cards */}
+      {!loading && empresas.length > 0 && (
+        <div className="md:hidden space-y-3 mb-4">
+          {empresas.map(empresa => (
+            <div key={empresa.id_empresa} className="bg-white rounded-xl border border-gray-200 px-4 py-3">
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <div className="min-w-0">
+                  <p className="font-medium text-gray-900 truncate">{empresa.nombre}</p>
+                  <p className="text-xs text-gray-400 font-mono">{empresa.slug ?? "—"}</p>
+                </div>
+                <div className="flex items-center gap-3 shrink-0">
+                  <button onClick={() => handleToggleActiva(empresa)} disabled={togglingId === empresa.id_empresa}
+                    className={`transition-colors disabled:opacity-40 ${empresa.activa ? "text-green-500" : "text-gray-300"}`}>
+                    <Power size={16} />
+                  </button>
+                  <button onClick={() => navigate(`/empresas/${empresa.id_empresa}/editar`)} className="text-gray-400 hover:text-brand-600">
+                    <Pencil size={16} />
+                  </button>
+                  <button onClick={() => handleDelete(empresa)} disabled={deletingId === empresa.id_empresa}
+                    className="text-gray-400 hover:text-red-500 disabled:opacity-40">
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                <span className="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700">{planLabel(empresa.id_plan)}</span>
+                {empresa.servicios.bot && <span className="px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">Bot</span>}
+                {empresa.servicios.landing && <span className="px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-700">Landing</span>}
+                {empresa.servicios.catalogo_repo && <span className="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">Catálogo</span>}
+                {empresa.servicios.panel_cliente && <span className="px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700">Panel</span>}
+                {empresa.servicios.instagram && <span className="px-2 py-0.5 rounded text-xs font-medium bg-pink-100 text-pink-700">Instagram</span>}
+                {empresa.servicios.facebook && <span className="px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700">Facebook</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Desktop tabla */}
+      <div className="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden">
         {loading ? (
           <div className="py-16 text-center text-sm text-gray-400">Cargando...</div>
         ) : empresas.length === 0 ? (
@@ -422,6 +460,7 @@ export default function EmpresasPage() {
       {deleteError && (
         <p className="mt-3 text-sm text-red-600">{deleteError}</p>
       )}
+
 
       {showModal && <ModalAlta onClose={() => setShowModal(false)} onCreated={handleCreated} />}
     </div>
