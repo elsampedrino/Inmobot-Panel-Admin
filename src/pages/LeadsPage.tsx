@@ -156,7 +156,7 @@ export default function LeadsPage() {
             <div
               key={lead.id_lead}
               onClick={() => navigate(`/leads/${lead.id_lead}`)}
-              className="bg-white rounded-xl border border-gray-200 p-4 cursor-pointer active:bg-gray-50 transition-colors"
+              className="bg-white rounded-xl border-2 border-brand-700 p-4 cursor-pointer active:bg-gray-50 transition-colors"
             >
               <div className="flex items-start justify-between gap-2 mb-2">
                 <span className="font-semibold text-gray-900 text-sm leading-snug">{lead.nombre ?? "—"}</span>
@@ -176,7 +176,7 @@ export default function LeadsPage() {
       </div>
 
       {/* ── Desktop: tabla ────────────────────────────────────────────── */}
-      <div className="hidden md:block bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="hidden md:block bg-white rounded-xl border-2 border-brand-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

@@ -165,7 +165,7 @@ export default function PropiedadesPage() {
       {error && <div className="mb-4 bg-red-50 text-red-700 text-sm rounded-lg p-4">{error}</div>}
 
       {/* Lista / Tabla */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-white rounded-xl border-2 border-brand-700 overflow-hidden">
         {loading ? (
           <div className="p-8 text-center text-gray-400 text-sm">Cargando...</div>
         ) : items.length === 0 ? (
@@ -314,11 +314,11 @@ export default function PropiedadesPage() {
             <p className="text-xs text-gray-400">Pág. {page} de {totalPages}</p>
             <div className="flex gap-2">
               <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-                className="px-3 py-1.5 text-xs border border-gray-300 rounded-lg disabled:opacity-40 hover:bg-gray-50">
+                className="px-3 py-1.5 text-xs bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 disabled:opacity-40 transition-colors">
                 Anterior
               </button>
               <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-                className="px-3 py-1.5 text-xs border border-gray-300 rounded-lg disabled:opacity-40 hover:bg-gray-50">
+                className="px-3 py-1.5 text-xs bg-brand-600 text-white font-medium rounded-lg hover:bg-brand-700 disabled:opacity-40 transition-colors">
                 Siguiente
               </button>
             </div>
