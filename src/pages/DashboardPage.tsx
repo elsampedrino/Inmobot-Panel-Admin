@@ -93,13 +93,13 @@ function KPICard({ icon, label, value, sub }: {
   icon: ReactNode; label: string; value: string | number; sub?: string;
 }) {
   return (
-    <div className="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl border border-violet-100 p-4 flex items-start gap-3 hover:border-violet-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
-      <div className="p-2 rounded-lg bg-gray-900 text-white shrink-0">{icon}</div>
-      <div className="min-w-0">
-        <p className="text-xs font-medium text-gray-400 uppercase tracking-wide leading-tight mb-1 break-words">{label}</p>
+    <div className="bg-gradient-to-br from-violet-50 to-cyan-50 rounded-xl border border-violet-100 p-4 flex flex-col gap-2 hover:border-violet-300 hover:shadow-xl hover:scale-105 transition-all duration-300">
+      <p className="text-xs font-medium text-gray-400 uppercase tracking-wide leading-tight">{label}</p>
+      <div className="flex items-center gap-2">
+        <div className="p-2 rounded-lg bg-gray-900 text-white shrink-0">{icon}</div>
         <p className="text-2xl font-bold text-gray-900">{value}</p>
-        {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
       </div>
+      {sub && <p className="text-xs text-gray-400">{sub}</p>}
     </div>
   );
 }
