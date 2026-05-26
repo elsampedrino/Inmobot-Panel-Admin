@@ -44,15 +44,12 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-900 to-brand-700 px-4">
+    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: '#061631' }}>
       <div className="w-full max-w-sm">
-        {/* Logo/título */}
+        {/* Logo completo con texto integrado */}
         <div className="text-center mb-8">
-          <div className="mb-4">
-            <img src="/inmobot-logo.jpg" alt="InmoBot" className="w-20 h-20 rounded-2xl mx-auto object-cover" />
-          </div>
-          <h1 className="text-2xl font-bold text-white">InmoBot</h1>
-          <p className="text-brand-100 text-sm mt-1">Panel Administrativo</p>
+          <img src="/inmobot-logo-completo.png" alt="InmoBot" className="w-48 mx-auto" />
+          <p className="text-white font-bold text-sm mt-2">Panel Administrativo</p>
         </div>
 
         {/* Card */}
