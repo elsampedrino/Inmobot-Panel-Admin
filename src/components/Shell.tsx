@@ -73,6 +73,7 @@ export default function Shell() {
   );
 
   return (
+    <>
     <div className="flex h-screen bg-gray-50">
 
       {/* ── Sidebar — solo desktop ─────────────────────────────────────── */}
@@ -282,5 +283,6 @@ export default function Shell() {
         </div>
       </div>
     )}
+    </>
   );
 }
