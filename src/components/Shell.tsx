@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -8,8 +9,13 @@ import {
   Briefcase,
   UserCog,
   FileInput,
+  KeyRound,
+  Eye,
+  EyeOff,
+  X,
 } from "lucide-react";
 import { clearSession, getSession } from "../lib/auth";
+import { api, ApiError } from "../lib/api";
 
 const navItems = [
   { to: "/dashboard",    label: "Inicio",       icon: LayoutDashboard, superadmin: false, soloEmpresa: false },
@@ -24,9 +30,41 @@ export default function Shell() {
   const navigate = useNavigate();
   const session = getSession();
 
+  const [showModal, setShowModal]         = useState(false);
+  const [passActual, setPassActual]       = useState("");
+  const [passNueva, setPassNueva]         = useState("");
+  const [passConfirm, setPassConfirm]     = useState("");
+  const [showPass, setShowPass]           = useState(false);
+  const [saving, setSaving]               = useState(false);
+  const [passError, setPassError]         = useState<string | null>(null);
+  const [passOk, setPassOk]              = useState(false);
+
   function handleLogout() {
     clearSession();
     navigate("/login", { replace: true });
+  }
+
+  function openModal() {
+    setPassActual(""); setPassNueva(""); setPassConfirm("");
+    setPassError(null); setPassOk(false); setShowModal(true);
+  }
+
+  async function handleChangePassword(e: React.FormEvent) {
+    e.preventDefault();
+    setPassError(null);
+    if (passNueva !== passConfirm) { setPassError("Las contraseñas nuevas no coinciden."); return; }
+    if (passNueva.length < 8) { setPassError("La nueva contraseña debe tener al menos 8 caracteres."); return; }
+    setSaving(true);
+    try {
+      await api.post("/admin/auth/change-password", { password_actual: passActual, password_nueva: passNueva });
+      setPassOk(true);
+      setTimeout(() => setShowModal(false), 1500);
+    } catch (err) {
+      if (err instanceof ApiError) setPassError(err.message);
+      else setPassError("No se pudo conectar con el servidor.");
+    } finally {
+      setSaving(false);
+    }
   }
 
   const visibleItems = navItems.filter(({ superadmin, soloEmpresa }) =>
@@ -78,6 +116,13 @@ export default function Shell() {
               <p className="text-xs text-gray-400 truncate">{session?.usuario.email}</p>
             </div>
             <button
+              onClick={openModal}
+              title="Cambiar contraseña"
+              className="text-gray-400 hover:text-brand-400 transition-colors"
+            >
+              <KeyRound size={15} />
+            </button>
+            <button
               onClick={handleLogout}
               title="Cerrar sesión"
               className="text-gray-400 hover:text-red-400 transition-colors"
@@ -102,6 +147,13 @@ export default function Shell() {
           <div className="w-7 h-7 rounded-full bg-brand-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
             {session?.usuario.nombre?.[0]?.toUpperCase() ?? "?"}
           </div>
+          <button
+            onClick={openModal}
+            title="Cambiar contraseña"
+            className="text-gray-400 hover:text-brand-400 transition-colors p-1"
+          >
+            <KeyRound size={17} />
+          </button>
           <button
             onClick={handleLogout}
             title="Cerrar sesión"
@@ -142,5 +194,93 @@ export default function Shell() {
       </nav>
 
     </div>
+
+    {/* ── Modal cambiar contraseña ───────────────────────────────────── */}
+    {showModal && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+        <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-base font-semibold text-gray-800">Cambiar contraseña</h2>
+            <button onClick={() => setShowModal(false)} className="text-gray-400 hover:text-gray-600">
+              <X size={18} />
+            </button>
+          </div>
+
+          {passOk ? (
+            <div className="text-center py-4 space-y-2">
+              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mx-auto">
+                <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <p className="text-sm font-medium text-gray-700">¡Contraseña actualizada!</p>
+            </div>
+          ) : (
+            <form onSubmit={handleChangePassword} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña actual</label>
+                <div className="relative">
+                  <input
+                    type={showPass ? "text" : "password"}
+                    required
+                    value={passActual}
+                    onChange={e => setPassActual(e.target.value)}
+                    className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+                    placeholder="••••••••"
+                  />
+                  <button type="button" onClick={() => setShowPass(v => !v)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600" tabIndex={-1}>
+                    {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nueva contraseña</label>
+                <input
+                  type={showPass ? "text" : "password"}
+                  required
+                  minLength={8}
+                  value={passNueva}
+                  onChange={e => setPassNueva(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+                  placeholder="Mínimo 8 caracteres"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Confirmar nueva contraseña</label>
+                <input
+                  type={showPass ? "text" : "password"}
+                  required
+                  minLength={8}
+                  value={passConfirm}
+                  onChange={e => setPassConfirm(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+                  placeholder="Repetí la contraseña"
+                />
+              </div>
+
+              {passError && (
+                <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-3 py-2">
+                  {passError}
+                </div>
+              )}
+
+              <div className="flex gap-3 pt-1">
+                <button type="button" onClick={() => setShowModal(false)}
+                  className="flex-1 border border-gray-300 text-gray-700 font-medium py-2 rounded-lg text-sm hover:bg-gray-50 transition-colors">
+                  Cancelar
+                </button>
+                <button type="submit" disabled={saving}
+                  className="flex-1 bg-brand-600 hover:bg-brand-700 disabled:opacity-60 text-white font-medium py-2 rounded-lg text-sm transition-colors">
+                  {saving ? "Guardando..." : "Guardar"}
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
+    )}
   );
 }

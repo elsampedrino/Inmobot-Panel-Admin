@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { api, ApiError } from "../lib/api";
 import { saveSession, type AuthSession } from "../lib/auth";
@@ -111,6 +111,15 @@ export default function LoginPage() {
             >
               {loading ? "Ingresando..." : "Ingresar"}
             </button>
+
+            <div className="text-center pt-1">
+              <Link
+                to="/forgot-password"
+                className="text-xs text-gray-400 hover:text-brand-600 transition-colors"
+              >
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </div>
           </form>
         </div>
       </div>
