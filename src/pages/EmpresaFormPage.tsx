@@ -333,6 +333,12 @@ export default function EmpresaFormPage() {
                   onChange={(v) => setServicios({ facebook: v })}
                 />
               </FieldRow>
+              <FieldRow label="Canal WhatsApp (bot)">
+                <Toggle
+                  value={form.servicios?.canal_whatsapp ?? false}
+                  onChange={(v) => setServicios({ canal_whatsapp: v })}
+                />
+              </FieldRow>
             </Card>
 
             {/* Card: Configuración de repositorio (solo si catalogo_repo habilitado) */}
